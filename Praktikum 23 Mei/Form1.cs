@@ -25,6 +25,7 @@ namespace Praktikum_23_Mei
         DataTable dtPemain = new DataTable();
         DataTable dtNationality = new DataTable();  
         DataTable dtTeam = new DataTable();
+        DataTable dtNumber = new DataTable();
         int PosisiSekarang = 0;
         public void IsiDataPemain(int Posisi)
         {
@@ -67,6 +68,16 @@ namespace Praktikum_23_Mei
             cBoxTeam.DisplayMember = "Team";
             cBoxTeam.ValueMember = "TeamID";
             IsiDataPemain(0);
+
+
+            if (dtNumber.Rows.Count > 0)
+            {
+                lblAvailable.Text = "Not Available";
+            }
+            else
+            {
+                lblAvailable.Text = "Available";
+            }
         }
 
         private void dtpBirthDate_ValueChanged(object sender, EventArgs e)
@@ -114,7 +125,20 @@ namespace Praktikum_23_Mei
 
         private void nupTeamNumber_ValueChanged(object sender, EventArgs e)
         {
-            
+            dtNumber = new DataTable();
+            sqlQuery = $"SELECT * FROM player WHERE team_id='"+cBoxTeam.SelectedValue+"' and team_number='"+nupTeamNumber.Value+"'";
+            sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
+            sqlAdapter = new MySqlDataAdapter(sqlCommand);
+            sqlAdapter.Fill(dtNumber);
+
+            if (dtNumber.Rows.Count > 0)
+            {
+                lblAvailable.Text = "Not Available";
+            }
+            else
+            {
+                lblAvailable.Text = "Available";
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
